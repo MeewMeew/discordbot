@@ -5,7 +5,7 @@
 ## Pre-requisites
 
 - Node.js v18 or higher (Install it from [here](https://nodejs.org/en/download/))
-- Bun v1.0 (Install it from [here](bun.sh))
+- Bun v1.0 (Install it from [here](https://bun.sh))
 - ffmpeg v4.4.0 or higher (Install it from [here](https://ffmpeg.org/download.html))
 
 ## Installation
