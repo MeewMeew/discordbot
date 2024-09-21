@@ -17,6 +17,7 @@ export interface Command {
   description: string,
   timeout?: number,
   usage?: string
+  admin?: boolean
   run: ({ message, args, client }: RunnerArgs) => void | Promise<void>
 }
 

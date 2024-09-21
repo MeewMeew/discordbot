@@ -1,11 +1,13 @@
 import { Events } from "distube";
 import { DisTubeEvent } from "../../types";
 import config from "../../../config.json";
+import { Signale } from "signale";
 
 export default class FFmpegDebugEvent extends DisTubeEvent<Events.FFMPEG_DEBUG> {
   readonly name = Events.FFMPEG_DEBUG;
   run(message: string) {
+    const log = new Signale({ scope: "FFmpeg Debug" });
     if (!config.debug) return;
-    this.client.log.debug(`FFmpeg: ${message}`);
+    log.debug(`FFmpeg: ${message}`);
   }
 }

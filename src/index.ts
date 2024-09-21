@@ -1,20 +1,24 @@
-import { GatewayIntentBits } from 'discord.js'
-import { DisTubeClient } from './client'
-import config from '../config.json'
+import { spawn } from 'node:child_process'
+import { Signale } from 'signale'
 
-const client = new DisTubeClient({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildVoiceStates,
-    GatewayIntentBits.MessageContent
-  ]
-})
-async function start() {
-  await client.login(config.token)
-  client.on('ready', () => {
-    client.log.success('Logged in as ' + client.user?.tag)
-  })
+const log = new Signale({ scope: 'App Wrapper' })
+
+function initialize() {
+  const argv = process.argv
+  return spawn('bun', ['run', argv[1].includes('.ts') ? 'src/app.ts' : 'build/app.js'], {
+    stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
+    cwd: process.cwd()
+  }).on('exit', (code: number) => {
+    if (code === 999) {
+      log.error('Bot exited with code', code)
+      log.warn('Bot will not reboot.')
+      process.exit(0)
+    } else {
+      log.warn('Bot exited with code', code)
+      log.warn('Bot rebooting...')
+      initialize()
+    }
+  }).on('error', log.error)
 }
 
-start().catch(client.log.fatal)
+initialize()

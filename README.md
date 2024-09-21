@@ -1,5 +1,7 @@
 # MewBot
 
+- A simple Discord bot that plays music in voice channels
+
 ## Pre-requisites
 
 - Node.js v18 or higher (Install it from [here](https://nodejs.org/en/download/))
@@ -20,26 +22,33 @@ git clone https://github.com/meewmeew/discordbot.git
 bun install
 ```
 
-3. Run fix distube dependency
+3. Rerun install to fix the dependencies
 
 ```bash
-bun run fix
+bun install
 ```
 
-4. Copy config.example.json to config.json and edit it
+4. Build the bot
+
+```bash
+bun run build
+```
+
+5. Copy config.example.json to config.json and edit it
 
 ```json
 {
   "token": "YOUR_BOT_TOKEN",
   "prefix": "!",
   "ownerID": "YOUR_DISCORD_ID",
-  "botID": "xxx",
+  "botID": "YOUR_BOT_ID",
   "allowNsfw": true,
-  "debug": false
+  "debug": false,
+  "statuses": ["Mẹ Bạn", "Your Mom"]
 }
 ```
 
-5. Start the bot
+6. Start the bot
 
 ```bash
 bun start

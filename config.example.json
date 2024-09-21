@@ -2,7 +2,11 @@
   "token": "YOUR_BOT_TOKEN",
   "prefix": "!",
   "ownerID": "YOUR_DISCORD_ID",
-  "botID": "xxx",
+  "botID": "YOUR_BOT_ID",
   "allowNsfw": true,
-  "debug": false
+  "debug": false,
+  "statuses": [
+    "Mẹ Bạn",
+    "Your Mom"
+  ]
 }

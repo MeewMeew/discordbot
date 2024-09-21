@@ -17,47 +17,49 @@ export class DisTubeClient extends Client {
     nsfw: config.allowNsfw,
   })
   commands = new Collection<string, Command>()
+  events = new Collection<string, any>()
+  distubeEvents = new Collection<string, any>()
   log = new Signale({ scope: "Discord Bot" })
 
   constructor(options: ClientOptions) {
     super(options)
-    Promise.all([
-      readdirSync(join(__dirname, "commands")).forEach(this.loadCommand.bind(this)),
-      readdirSync(join(__dirname, "events", "client")).forEach(this.loadEvent.bind(this)),
-      readdirSync(join(__dirname, "events", "distube")).forEach(this.loadDistubeEvent.bind(this)),
-    ])
+    readdirSync(join(__dirname, "commands"))
+      .forEach(this.loadCommand.bind(this))
+    readdirSync(join(__dirname, "events", "client"))
+      .forEach(this.loadEvent.bind(this))
+    readdirSync(join(__dirname, "events", "distube"))
+      .forEach(this.loadDistubeEvent.bind(this))
   }
 
   async loadCommand(name: string) {
-    const log = new Signale({ scope: "Bot Command Loader" })
+    const log = new Signale({ scope: "Command Loader", interactive: true })
     try {
-      const command = await import(`./commands/${name}`)
+      const command = await import(join(__dirname, 'commands', name))
       this.commands.set(command.name, command)
-      log.success(`Loaded command ${name}`)
     } catch (error: any) {
       log.error(`Unable to load command ${name}: ${error.stack || error}`)
     }
   }
 
   async loadEvent(eventName: string) {
-    const log = new Signale({ scope: "Discord Event Loader" })
+    const log = new Signale({ scope: "Event Loader", interactive: true })
     try {
-      const { name, run } = await import(`./events/client/${eventName}`)
+      const { name, run } = await import(join(__dirname, 'events', 'client', eventName))
       const fn = run(this)
       this.on(name, fn)
-      log.success(`Listening for event ${eventName}`)
+      this.events.set(name, fn)
     } catch (error: any) {
       log.error(`Unable to listen event ${eventName}: ${error.stack || error}`)
     }
   }
 
   async loadDistubeEvent(eventName: string) {
-    const log = new Signale({ scope: "Distube Event Loader" })
+    const log = new Signale({ scope: "Event Loader", interactive: true })
     try {
-      const E = await import(`./events/distube/${eventName}`)
+      const E = await import(join(__dirname, 'events', 'distube', eventName))
       const event = new E.default(this)
       this.distube.on(event.name, event.execute.bind(event))
-      log.success(`Listening for DisTube event ${eventName}`)
+      this.distubeEvents.set(event.name, event)
     } catch (error: any) {
       log.error(`Unable to listen DisTube event ${eventName}: ${error.stack || error}`)
     }

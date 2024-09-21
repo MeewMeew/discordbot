@@ -10,14 +10,13 @@ import { AppleMusicPlugin } from 'distube-apple-music'
 
 export const plugins = [
   new FilePlugin(),
-  new SpotifyPlugin(),
-  new SoundCloudPlugin(),
+  new DirectLinkPlugin(),
   new YouTubePlugin(),
+  new SoundCloudPlugin(),
+  new SpotifyPlugin(),
+  new DeezerPlugin(),
+  new AppleMusicPlugin(),
   new YtDlpPlugin({
     update: true,
   }),
-  new DirectLinkPlugin(),
-  new DeezerPlugin(),
-  new TidalPlugin(),
-  new AppleMusicPlugin()
 ]

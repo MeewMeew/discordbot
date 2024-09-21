@@ -10,7 +10,7 @@ try {
   const newContent = fileContent
     .replace(
       'opts.i = fileUrl.hostname + fileUrl.pathname;',
-      'opts.i = fileUrl.hostname + fileUrl.pathname.slice(1);'
+      'opts.i = fileUrl.hostname + fileUrl.pathname.slice(fileUrl.hostname ? 0 : 1);'
     )
 
   fs.writeFileSync(path, newContent)
