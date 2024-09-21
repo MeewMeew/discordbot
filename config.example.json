@@ -1,0 +1,8 @@
+{
+  "token": "YOUR_BOT_TOKEN",
+  "prefix": "!",
+  "ownerID": "YOUR_DISCORD_ID",
+  "botID": "xxx",
+  "allowNsfw": true,
+  "debug": false
+}

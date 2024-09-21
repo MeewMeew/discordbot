@@ -1,0 +1,37 @@
+{
+  "name": "mewbot",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "fix": "bun run scripts/fix-distube.ts"
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.9.0",
+    "@discordjs/voice": "^0.17.0",
+    "@distube/deezer": "^2.0.1",
+    "@distube/direct-link": "^1.0.1",
+    "@distube/file": "^1.0.1",
+    "@distube/soundcloud": "^2.0.3",
+    "@distube/spotify": "^2.0.2",
+    "@distube/youtube": "^1.0.4",
+    "@distube/yt-dlp": "^2.0.1",
+    "discord.js": "^14.16.2",
+    "distube": "^5.0.2",
+    "distube-apple-music": "^0.1.0",
+    "distube-tidal": "^0.1.0",
+    "distube-yandex-music-plugin": "^1.0.5",
+    "ffmpeg-static": "^5.2.0",
+    "node-opus": "^0.3.3",
+    "opusscript": "^0.1.1",
+    "signale": "^1.4.0",
+    "sodium-native": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/signale": "^1.4.7"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
