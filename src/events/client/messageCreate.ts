@@ -1,7 +1,8 @@
-import { EmbedBuilder, type Message } from "discord.js"
+import { type Message } from "discord.js"
 import type { DisTubeClient } from "../../client"
 import { Signale } from "signale"
 import config from "../../../config.json"
+import { buildEmbed } from "../../utils"
 
 export const name = "messageCreate"
 export const run = (client: DisTubeClient) => {
@@ -14,27 +15,21 @@ export const run = (client: DisTubeClient) => {
     if (!command || !command.run) return
     if (command.admin && config.ownerID !== message.author.id) {
       log.error(`The command ${commandName} is restricted to the bot owner`)
-      return message.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setColor("Red")
-            .setTitle("Permission Denied")
-            .setDescription("You do not have permission to run this command")
-        ]
-      })
+      return message.reply(buildEmbed({
+        title: "Permission Denied",
+        description: "You do not have permission to run this command",
+        color: "Red"
+      }))
     }
     try {
       await command.run({ message, args, client })
       log.success(`The command ${commandName} was successfully executed by ${message.author.tag}`)
     } catch (error: any) {
-      message.reply({
-        embeds: [
-          new EmbedBuilder()
-            .setColor("Red")
-            .setTitle("An Error Occurred")
-            .setDescription(`An error occurred while running the command: ${error.stack || error}`)
-        ]
-      })
+      message.reply(buildEmbed({
+        title: "An Error Occurred",
+        description: `An error occurred while running the command: ${error.stack || error}`,
+        color: "Red"
+      }))
       log.error(`An error occurred while running the command: ${error.stack || error}`)
     }
   }

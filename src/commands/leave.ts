@@ -1,11 +1,8 @@
-import { type GuildTextBasedChannel } from "discord.js";
-import type { RunnerArgs, Metadata } from "../types";
+import type { RunnerArgs } from "../types";
 import { buildEmbed, getVoiceChannel } from "../utils";
 
-export const name = "play";
-export const aliases = ["p"];
-export const description = "Play a song!";
-export const usage = "<song>";
+export const name = "leave";
+export const description = "Leave the voice channel";
 export const category = "Music";
 
 export const run = async ({ message, args, client }: RunnerArgs) => {
@@ -14,7 +11,7 @@ export const run = async ({ message, args, client }: RunnerArgs) => {
     return message.reply(buildEmbed({
       title: "Error",
       color: "Red",
-      description: "You need to be in a voice channel!",
+      description: "You need to be in a voice channel to play music!",
       footer: {
         text: `Requested by ${message.author.globalName}`,
         iconURL: message.author.displayAvatarURL()
@@ -22,11 +19,11 @@ export const run = async ({ message, args, client }: RunnerArgs) => {
     }));
   }
 
-  if (meVoiceChannel && meVoiceChannel.id !== memberVoiceChannel.id) {
+  if (!meVoiceChannel) {
     return message.reply(buildEmbed({
       title: "Error",
       color: "Red",
-      description: "We are not in the same voice channel!",
+      description: "I'm not in a voice channel!",
       footer: {
         text: `Requested by ${message.author.globalName}`,
         iconURL: message.author.displayAvatarURL()
@@ -34,34 +31,30 @@ export const run = async ({ message, args, client }: RunnerArgs) => {
     }));
   }
 
-  const query = args.join(" ");
-  if (!query) {
+  if (meVoiceChannel.id !== memberVoiceChannel.id) {
     return message.reply(buildEmbed({
       title: "Error",
       color: "Red",
-      description: "You need to provide a song name!",
+      description: "I'm not in your voice channel!",
       footer: {
         text: `Requested by ${message.author.globalName}`,
         iconURL: message.author.displayAvatarURL()
       }
     }));
   }
-  const searching = await message.reply(buildEmbed({
+  const queue = client.distube.getQueue(message);
+  if (queue) {
+    queue.stop();
+  }
+
+  client.distube.voices.leave(memberVoiceChannel);
+
+  message.reply(buildEmbed({
     title: client.user?.globalName!,
-    description: `Searching for \`${query}\``,
+    description: "I'm leaving the voice channel!",
     footer: {
       text: `Requested by ${message.author.globalName}`,
       iconURL: message.author.displayAvatarURL()
     }
   }));
-  await client.distube.play<Metadata>(
-    memberVoiceChannel, query, {
-    textChannel: message.channel as GuildTextBasedChannel,
-    member: message.member!,
-    message: message,
-    metadata: {
-      message: message,
-      textChannel: message.channel as GuildTextBasedChannel
-    }
-  }).then(() => searching.delete());
 }

@@ -1,9 +1,13 @@
-import type { Command, RunnerArgs } from "../types";
+import type { RunnerArgs } from "../types";
 import config from "../../config.json";
 import { EmbedBuilder, type APIEmbedField, type RestOrArray } from "discord.js";
 
 export const name = "help";
+export const aliases = ["commands", "cmds", "h"];
 export const description = "List all of my commands or info about a specific command.";
+export const usage = "<command-name>"
+export const category = "Info"
+
 export const run = async ({ message, args, client }: RunnerArgs) => {
   const embed = new EmbedBuilder()
     .setColor("Random")
@@ -16,13 +20,12 @@ export const run = async ({ message, args, client }: RunnerArgs) => {
 
   if (!args.length) {
     const commandFields: RestOrArray<APIEmbedField> = []
-    client.commands.forEach((command) => {
-      if (command.name) {
-        commandFields.push({
-          name: command.name,
-          value: command.description || "No description provided"
-        })
-      }
+    const _categories = [...new Set(client.commands.map((command) => command.category))].forEach((category) => {
+      const commands = client.commands.filter((command) => command.category === category)
+      commandFields.push({
+        name: category!,
+        value: commands.map((command) => `\`${command.name}\``).join(", ")
+      })
     })
     embed.setTitle("Here's a list of all my commands:")
     embed.setFields(commandFields)
@@ -34,6 +37,10 @@ export const run = async ({ message, args, client }: RunnerArgs) => {
       return message.reply({ content: "That's not a valid command!" })
     }
     const commandFields: RestOrArray<APIEmbedField> = [
+      {
+        name: "Aliases",
+        value: command.aliases?.map((alias) => `\`${alias}\``).join(", ") || "`No aliases`"
+      },
       {
         name: "Description",
         value: `\`${command.description}\`` || "`No description provided`"

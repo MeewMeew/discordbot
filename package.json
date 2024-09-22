@@ -1,12 +1,13 @@
 {
   "name": "mewbot",
+  "version": "1.0.0",
   "module": "index.ts",
   "type": "module",
   "scripts": {
     "build": "tsup",
     "postinstall": "bun run scripts/postinstall.ts",
     "start": "bun run build/index.js",
-    "dev": "bun run src/index.ts"
+    "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
     "@discordjs/opus": "^0.9.0",

@@ -1,16 +1,20 @@
 import { Events, Queue, Song } from "distube"
 import { DisTubeEvent, type Metadata } from "../../types"
-import { EmbedBuilder } from "discord.js"
+import { buildEmbed } from "../../utils";
 
 
 export default class ErrorEvent extends DisTubeEvent<Events.ERROR> {
   readonly name = Events.ERROR;
   async run(error: Error, queue: Queue, song?: Song<Metadata>) {
-    const embed = new EmbedBuilder().setColor("Red").setTitle("Error").setDescription(`An error encountered: \`${error.message}\``);
+    const embed = buildEmbed({
+      title: "Error",
+      description: `An error encountered: \`${error.message}\``,
+      color: "Red"
+    });
     if (song) {
-      song.metadata?.message?.edit({ embeds: [embed] });
+      song.metadata?.message?.reply(embed);
     } else {
-      queue.textChannel?.send({ embeds: [embed] });
+      queue.textChannel?.send(embed);
     }
     this.client.log.error(error);
   }

@@ -16,12 +16,12 @@ async function start() {
   client.log.complete(`Loaded ${client.events.size} events`)
   client.log.complete(`Loaded ${client.distubeEvents.size} DisTube events`)
   client.on('ready', () => {
-    client.log.note()
+    client.log.star()
     client.log.star('------------------------------------' + '-'.repeat(config.prefix.length))
     client.log.info('Bot is ready with \' ' + config.prefix + ' \' as the prefix')
     client.log.info('Logged in as ' + client.user?.tag)
     client.log.star('------------------------------------' + '-'.repeat(config.prefix.length))
-    client.log.note()
+    client.log.star()
     setInterval(() => client.user?.setActivity({
       name: config.statuses[Math.floor(Math.random() * config.statuses.length)],
       type: 0

@@ -1,15 +1,23 @@
-import { EmbedBuilder } from "discord.js";
 import { Events, Queue, Song } from "distube";
 import { DisTubeEvent, type Metadata } from "../../types";
+import { buildEmbed } from "../../utils";
 
 export default class PlaySongEvent extends DisTubeEvent<Events.PLAY_SONG> {
   readonly name = Events.PLAY_SONG;
   run(queue: Queue, song: Song<Metadata>) {
-    const emded = new EmbedBuilder().setColor("Blurple").setTitle(song.user?.globalName!).setDescription(`Playing: \`${song.name}\``)
+    const emded = buildEmbed({
+      title: "Playing Song",
+      description: `Playing: \`${song.name}\``,
+      color: "Blurple",
+      footer: {
+        text: `Requested by ${song.metadata?.message?.author.globalName}`,
+        iconURL: song.metadata?.message?.author.displayAvatarURL()!
+      }
+    });
     if (!song.metadata?.message) {
-      queue.textChannel?.send({ embeds: [emded] });
+      queue.textChannel?.send(emded);
     } else {
-      song.metadata?.message?.edit({ embeds: [emded] });
+      song.metadata?.textChannel?.send(emded);
     }
   }
 }

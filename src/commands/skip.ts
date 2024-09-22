@@ -1,25 +1,29 @@
-import { EmbedBuilder } from "discord.js"
 import type { RunnerArgs } from "../types"
+import { buildEmbed } from "../utils"
 
 export const name = "skip"
 export const description = "Skip the current song"
-export const run = ({ message, client }: RunnerArgs) => {
+export const usage = ""
+export const category = "Music"
+
+export const run = async ({ message, client }: RunnerArgs) => {
   const queue = client.distube.getQueue(message)
-  if (!queue) return message.reply({
-    embeds: [
-      new EmbedBuilder()
-        .setColor("Red")
-        .setTitle("Error")
-        .setDescription("There is no queue in this server!")
-    ]
-  })
-  queue.skip()
-  message.reply({
-    embeds: [
-      new EmbedBuilder()
-        .setColor("Blurple")
-        .setTitle(client.user?.globalName!)
-        .setDescription("Skipped!")
-    ]
-  })
+  if (!queue) return message.reply(buildEmbed({
+    title: "Error",
+    description: "There is no queue in this server!",
+    color: "Red",
+    footer: {
+      text: `Requested by ${message.author.globalName}`,
+      iconURL: message.author.displayAvatarURL()
+    }
+  }))
+  await queue.skip()
+  await message.reply(buildEmbed({
+    title: client.user?.globalName!,
+    description: "Skipped!",
+    footer: {
+      text: `Requested by ${message.author.globalName}`,
+      iconURL: message.author.displayAvatarURL()
+    }
+  }))
 }

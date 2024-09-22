@@ -1,9 +1,10 @@
-import type { Client, Message } from "discord.js"
+import type { Client, GuildTextBasedChannel, Message } from "discord.js"
 import type { Awaitable, DisTubeEvents } from "distube";
 import type { DisTubeClient } from "./client";
 
 export interface Metadata {
-  message: Message
+  message?: Message,
+  textChannel?: GuildTextBasedChannel,
 }
 
 export interface RunnerArgs {
@@ -15,6 +16,8 @@ export interface RunnerArgs {
 export interface Command {
   name: string,
   description: string,
+  aliases?: string[],
+  category?: string,
   timeout?: number,
   usage?: string
   admin?: boolean
