@@ -32,34 +32,37 @@ export class DisTubeClient extends Client {
   }
 
   async loadCommand(name: string) {
-    const log = new Signale({ scope: "Command Loader", interactive: true })
+    const log = new Signale({ scope: "Command Loader" })
     try {
       const command = await import(join(__dirname, 'commands', name))
       this.commands.set(command.name, command)
+      config.debug && log.debug(`Loaded command ${command.name}`)
     } catch (error: any) {
       log.error(`Unable to load command ${name}: ${error.stack || error}`)
     }
   }
 
   async loadEvent(eventName: string) {
-    const log = new Signale({ scope: "Event Loader", interactive: true })
+    const log = new Signale({ scope: "Event Loader" })
     try {
       const { name, run } = await import(join(__dirname, 'events', 'client', eventName))
       const fn = run(this)
       this.on(name, fn)
       this.events.set(name, fn)
+      config.debug && log.debug(`Loaded event ${name}`)
     } catch (error: any) {
       log.error(`Unable to listen event ${eventName}: ${error.stack || error}`)
     }
   }
 
   async loadDistubeEvent(eventName: string) {
-    const log = new Signale({ scope: "Event Loader", interactive: true })
+    const log = new Signale({ scope: "Event Loader" })
     try {
       const E = await import(join(__dirname, 'events', 'distube', eventName))
       const event = new E.default(this)
       this.distube.on(event.name, event.execute.bind(event))
       this.distubeEvents.set(event.name, event)
+      config.debug && log.debug(`Loaded DisTube event ${event.name}`)
     } catch (error: any) {
       log.error(`Unable to listen DisTube event ${eventName}: ${error.stack || error}`)
     }

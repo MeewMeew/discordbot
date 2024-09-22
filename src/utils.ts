@@ -12,6 +12,7 @@ export function buildEmbed({
   title,
   description,
   fields,
+  image,
   footer,
   timestamp = true
 }: {
@@ -19,6 +20,7 @@ export function buildEmbed({
   title: string,
   description: string,
   fields?: RestOrArray<APIEmbedField>
+  image?: string,
   footer?: {
     text: string,
     iconURL: string
@@ -29,6 +31,12 @@ export function buildEmbed({
     .setColor(color)
     .setTitle(title)
     .setDescription(description)
+  if (fields) {
+    embed.addFields(...fields)
+  }
+  if (image) {
+    embed.setImage(image)
+  }
   if (footer) {
     embed.setFooter(footer)
   }
