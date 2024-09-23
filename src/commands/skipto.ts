@@ -1,4 +1,4 @@
-import type { RunnerArgs } from "../types";
+import type { CommandArgs } from "../types";
 import { buildEmbed } from "../utils";
 
 export const name = "skipto";
@@ -6,7 +6,7 @@ export const description = "Skip to the selected song";
 export const usage = "<number>";
 export const category = "Music";
 
-export const run = async ({ message, args, client }: RunnerArgs) => {
+export const run = async ({ message, args, client }: CommandArgs) => {
   const queue = client.distube.getQueue(message);
   if (!queue) return;
   if (isNaN(parseInt(args[0]))) {

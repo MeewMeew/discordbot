@@ -1,5 +1,4 @@
-import type { RunnerArgs } from "../types";
-import config from "../../config.json";
+import type { CommandArgs } from "../types";
 import { EmbedBuilder, type APIEmbedField, type RestOrArray } from "discord.js";
 
 export const name = "help";
@@ -8,7 +7,7 @@ export const description = "List all of my commands or info about a specific com
 export const usage = "<command-name>"
 export const category = "Info"
 
-export const run = async ({ message, args, client }: RunnerArgs) => {
+export const run = async ({ message, args, client }: CommandArgs) => {
   const embed = new EmbedBuilder()
     .setColor("Random")
     .setThumbnail(client.user!.displayAvatarURL())
@@ -47,7 +46,7 @@ export const run = async ({ message, args, client }: RunnerArgs) => {
       },
       {
         name: "Usage",
-        value: `\`${config.prefix}${command.name} ${command.usage || ""}\``
+        value: `\`${client.config.prefix}${command.name} ${command.usage || ""}\``
       },
       {
         name: "Cooldown",

@@ -1,7 +1,7 @@
 import { Signale } from "signale"
 import fs from 'node:fs'
 
-const log = new Signale({ scope: "Distube Fixer" })
+const log = new Signale({ scope: "distube" })
 try {
   const path = process.cwd() + '/node_modules/distube/dist/index.js'
   const fileContent = fs.readFileSync(path, 'utf-8')

@@ -1,4 +1,4 @@
-import type { RunnerArgs } from "../types"
+import type { CommandArgs } from "../types"
 import { buildEmbed } from "../utils"
 
 export const name = "seek"
@@ -7,7 +7,7 @@ export const description = "Seek to a specific timestamp in the song"
 export const usage = "<timestamp>"
 export const category = "Music"
 
-export const run = async ({ message, args, client }: RunnerArgs) => {
+export const run = async ({ message, args, client }: CommandArgs) => {
   const time = parseInt(args[0]) || 0
   const queue = client.distube.getQueue(message)
   if (!queue) return

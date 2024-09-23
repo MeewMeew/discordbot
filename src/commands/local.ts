@@ -1,6 +1,6 @@
 import path from "path";
 
-import type { RunnerArgs } from "../types";
+import type { CommandArgs } from "../types";
 import { type GuildTextBasedChannel } from "discord.js";
 import { buildEmbed, getVoiceChannel } from "../utils";
 
@@ -9,7 +9,7 @@ export const description = "Play music from local files";
 export const usage = "<file-name>"
 export const category = "Music"
 
-export const run = async ({ message, client, args }: RunnerArgs) => {
+export const run = async ({ message, client, args }: CommandArgs) => {
   const { meVoiceChannel, memberVoiceChannel } = getVoiceChannel(message);
   if (!memberVoiceChannel) {
     return message.reply(buildEmbed({

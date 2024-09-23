@@ -1,5 +1,5 @@
 import { type GuildTextBasedChannel } from "discord.js";
-import type { RunnerArgs, Metadata } from "../types";
+import type { CommandArgs, Metadata } from "../types";
 import { buildEmbed, getVoiceChannel } from "../utils";
 
 export const name = "play";
@@ -8,7 +8,7 @@ export const description = "Play a song!";
 export const usage = "<song>";
 export const category = "Music";
 
-export const run = async ({ message, args, client }: RunnerArgs) => {
+export const run = async ({ message, args, client }: CommandArgs) => {
   const { meVoiceChannel, memberVoiceChannel } = getVoiceChannel(message);
   if (!memberVoiceChannel) {
     return message.reply(buildEmbed({

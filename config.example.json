@@ -3,6 +3,7 @@
   "prefix": "!",
   "ownerID": "YOUR_DISCORD_ID",
   "botID": "YOUR_BOT_ID",
+  "autodownload": true,
   "allowNsfw": true,
   "debug": false,
   "statuses": [

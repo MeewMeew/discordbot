@@ -1,10 +1,10 @@
-import type { RunnerArgs } from "../types";
+import type { CommandArgs } from "../types";
 import { buildEmbed } from "../utils";
 
 export const name = "get";
 export const description = "Get the link of replied message attachment / image / video / file";
 export const category = "Utility";
-export const run = async ({ message }: RunnerArgs) => {
+export const run = async ({ message }: CommandArgs) => {
   if (!message.reference) {
     return message.reply(buildEmbed({
       title: "Error",

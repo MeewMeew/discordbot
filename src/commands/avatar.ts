@@ -1,5 +1,4 @@
-import type { RunnerArgs } from "../types"
-import config from '../../config.json'
+import type { CommandArgs } from "../types"
 import { buildEmbed } from "../utils"
 
 export const name = 'avatar'
@@ -7,13 +6,13 @@ export const aliases = ['av']
 export const description = 'Get the avatar of a user | Set bot avatar'
 export const category = 'Utility'
 
-export const run = async ({ message, args, client }: RunnerArgs) => {
+export const run = async ({ message, args, client }: CommandArgs) => {
   const user = message.mentions.users.first() || message.author
   const member = message.guild?.members.cache.get(user.id)
   const avatar = user.displayAvatarURL({ size: 4096 })
 
   if (args[0] === 'set') {
-    if (member?.id !== config.ownerID) {
+    if (member?.id !== client.config.ownerID) {
       return message.reply(buildEmbed({
         title: 'Error',
         description: 'You do not have the required permissions to set the bot avatar',

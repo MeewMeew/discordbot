@@ -1,4 +1,4 @@
-import type { RunnerArgs } from "../types";
+import type { CommandArgs } from "../types";
 import { buildEmbed } from "../utils";
 
 export const name = "volume";
@@ -7,7 +7,7 @@ export const description = "Change the volume of the music";
 export const usage = "<volume>";
 export const category = "Music";
 
-export const run = async ({ message, args, client }: RunnerArgs) => {
+export const run = async ({ message, args, client }: CommandArgs) => {
   const queue = client.distube.getQueue(message);
   if (!queue) {
     return message.reply(buildEmbed({

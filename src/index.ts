@@ -1,11 +1,11 @@
 import { spawn } from 'node:child_process'
 import { Signale } from 'signale'
 
-const log = new Signale({ scope: 'App Wrapper' })
+const log = new Signale({ scope: 'app wrapper' })
 
 function initialize() {
   const argv = process.argv
-  return spawn('bun', ['run', argv[1].includes('.ts') ? 'src/app.ts' : 'build/app.js'], {
+  return spawn('bun', ['run', argv[1].includes('.ts') ? 'src/core/app.ts' : 'build/app.js'], {
     stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
     cwd: process.cwd()
   }).on('exit', (code: number) => {

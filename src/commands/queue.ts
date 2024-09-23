@@ -1,4 +1,4 @@
-import type { RunnerArgs } from './../types';
+import type { CommandArgs } from './../types';
 import { RepeatMode } from 'distube';
 import { buildEmbed } from '../utils';
 
@@ -8,7 +8,7 @@ export const description = "Queue related commands"
 export const usage = "<loop | queue>"
 export const category = "Music"
 
-export const run = async ({ message, args, client }: RunnerArgs) => {
+export const run = async ({ message, args, client }: CommandArgs) => {
   const queue = client.distube.getQueue(message)
   if (!queue) return
   const song = queue.songs[0]

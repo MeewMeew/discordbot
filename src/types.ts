@@ -1,13 +1,13 @@
 import type { Client, GuildTextBasedChannel, Message } from "discord.js"
 import type { Awaitable, DisTubeEvents } from "distube";
-import type { DisTubeClient } from "./client";
+import type { DisTubeClient } from "./core/client";
 
 export interface Metadata {
   message?: Message,
   textChannel?: GuildTextBasedChannel,
 }
 
-export interface RunnerArgs {
+export interface CommandArgs {
   message: Message,
   args: string[],
   client: DisTubeClient
@@ -21,7 +21,7 @@ export interface Command {
   timeout?: number,
   usage?: string
   admin?: boolean
-  run: ({ message, args, client }: RunnerArgs) => void | Promise<void>
+  run: ({ message, args, client }: CommandArgs) => void | Promise<void>
 }
 
 export abstract class DisTubeEvent<T extends keyof DisTubeEvents> {

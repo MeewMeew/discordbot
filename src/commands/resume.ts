@@ -1,11 +1,11 @@
-import type { RunnerArgs } from "../types"
+import type { CommandArgs } from "../types"
 import { buildEmbed } from "../utils"
 
 export const name = "resume"
 export const description = "Resume the current song"
 export const category = "Music"
 
-export const run = async ({ message, client }: RunnerArgs) => {
+export const run = async ({ message, client }: CommandArgs) => {
   const queue = client.distube.getQueue(message)
   if (!queue) return message.reply(buildEmbed({
     title: "Error",

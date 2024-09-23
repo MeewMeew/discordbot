@@ -1,11 +1,11 @@
-import type { RunnerArgs } from "../types";
+import type { CommandArgs } from "../types";
 import { buildEmbed, getVoiceChannel } from "../utils";
 
 export const name = "leave";
 export const description = "Leave the voice channel";
 export const category = "Music";
 
-export const run = async ({ message, args, client }: RunnerArgs) => {
+export const run = async ({ message, args, client }: CommandArgs) => {
   const { meVoiceChannel, memberVoiceChannel } = getVoiceChannel(message);
   if (!memberVoiceChannel) {
     return message.reply(buildEmbed({

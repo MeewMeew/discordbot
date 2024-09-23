@@ -1,5 +1,4 @@
-import type { RunnerArgs } from "../types"
-import config from "../../config.json"
+import type { CommandArgs } from "../types"
 import { buildEmbed } from "../utils"
 
 export const name = "invite"
@@ -7,10 +6,10 @@ export const aliases = ["inv", "inviteme"]
 export const description = "Invite me to your server"
 export const category = "Utility"
 
-export const run = async ({ message }: RunnerArgs) => {
+export const run = async ({ message, client }: CommandArgs) => {
   await message.reply(buildEmbed({
     title: "Invite",
-    description: `My invite link is: [click here](https://discord.com/api/oauth2/authorize?client_id=${config.botID}&permissions=3197440&scope=bot%20applications.commands)`,
+    description: `My invite link is: [click here](https://discord.com/api/oauth2/authorize?client_id=${client.config.botID}&permissions=3197440&scope=bot%20applications.commands)`,
     footer: {
       text: `Requested by ${message.author.globalName}`,
       iconURL: message.author.displayAvatarURL()
