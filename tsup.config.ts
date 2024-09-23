@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entryPoints: ['src/index.ts', 'src/app.ts', 'src/commands/**/*.ts', 'src/events/**/*.ts'],
+  entryPoints: ['src/index.ts', 'src/core/app.ts', 'src/commands/**/*.ts', 'src/events/**/*.ts'],
   format: ['esm'],
   minify: true,
   clean: true,
