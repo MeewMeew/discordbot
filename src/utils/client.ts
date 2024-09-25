@@ -150,10 +150,18 @@ export async function tiktokPublicMedia(url: string): Promise<File[]> {
   if (!aweme_list) return []
   const { video, image_post_info } = aweme_list[0]
   if (type === 'video') {
-    return [{ attachment: video.play_addr_h264.url_list[1], name: video.play_addr_h264.uri.replace(/\//g, '_') + '.mp4' }]
+    return [
+      {
+        attachment: video.play_addr_h264.url_list[1],
+        name: video.play_addr_h264.uri.replace(/\//g, '_') + '.mp4'
+      }
+    ]
   } else {
     return image_post_info.images.map(({ display_image: { uri, url_list } }) => {
-      return { attachment: url_list[1], name: uri.replace(/\//g, '_') + '.jpg' }
+      return {
+        attachment: url_list[1],
+        name: uri.replace(/\//g, '_') + '.jpg'
+      }
     })
   }
 }

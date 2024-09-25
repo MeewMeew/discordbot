@@ -37,7 +37,7 @@ export const run = (client: DisTubeClient) => {
       await command.run({ message, args, client })
       log.success(`The command ${command.name} was successfully executed by ${message.author.tag}`)
     } catch (error: any) {
-      message.reply(buildEmbed({
+      client.config.debug && await message.reply(buildEmbed({
         title: "An Error Occurred",
         description: `An error occurred while running the command: ${error.stack || error}`,
         color: "Red"
