@@ -1,5 +1,6 @@
 import { GatewayIntentBits } from 'discord.js'
 import { DisTubeClient } from './client'
+import { version } from '../../package.json'
 
 const client = new DisTubeClient({
   intents: [
@@ -18,6 +19,7 @@ async function start() {
   client.on('ready', () => {
     client.log.star()
     client.log.star('------------------------------------' + '-'.repeat(client.config.prefix.length))
+    client.log.info('Mewbot version v' + version)
     client.log.info('Bot is ready with \' ' + client.config.prefix + ' \' as the prefix')
     client.log.info('Logged in as ' + client.user?.tag)
     client.log.star('------------------------------------' + '-'.repeat(client.config.prefix.length))
