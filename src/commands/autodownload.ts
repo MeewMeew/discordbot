@@ -21,6 +21,11 @@ export async function run({ message, args, client }: CommandArgs) {
   } else if (platform === "tiktok") {
     files = await tiktokPublicMedia(id)
   }
+  if (!files.length) {
+    await message.react('❌')
+    return client.log.error(`Failed to download ${platform} ${type} ${id}`)
+  }
   await message.reply({ files: files })
+  await message.react('✅')
   client.log.success(`Downloaded ${platform} ${type} ${id}`)
 }

@@ -1,6 +1,6 @@
 {
   "name": "mewbot",
-  "version": "1.0.2.2",
+  "version": "1.0.2.3",
   "module": "index.ts",
   "type": "module",
   "scripts": {
@@ -29,7 +29,8 @@
     "qss": "^3.0.0",
     "signale": "^1.4.0",
     "sodium-native": "^4.2.0",
-    "tsup": "^8.3.0"
+    "tsup": "^8.3.0",
+    "xior": "^0.6.1"
   },
   "devDependencies": {
     "@types/bun": "latest",

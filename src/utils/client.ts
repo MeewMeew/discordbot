@@ -1,10 +1,11 @@
-import { request } from 'undici'
+import xior from 'xior'
 import { Signale } from 'signale'
 const log = new Signale({ scope: "client request" })
 import { encode } from 'qss'
 import config from '../../config.json'
 
 export type File = { attachment: string; name: string }
+
 export type Ameme = {
   aweme_list: {
     video: {
@@ -22,6 +23,15 @@ export type Ameme = {
       }[]
     }
   }[]
+}
+
+export type PublerResponse = {
+  payload: {
+    path: string,
+    error: string,
+    type: 'video' | 'photo',
+  }[],
+  status: string
 }
 
 const publerHeaders = {
@@ -61,7 +71,7 @@ const tiktokDomain = 'https://api22-normal-c-alisg.tiktokv.com'
 const tiktokFeed = `${tiktokDomain}/aweme/v1/feed/`
 
 function makeTikTokRequest(url: string, headers: Record<string, string> = {}) {
-  return request(url, {
+  return xior.get<Ameme>(url, {
     headers: {
       ...tiktokHeaders,
       ...headers,
@@ -83,8 +93,8 @@ function extractTiktokURL(url: string): Promise<{ id: string, type: 'video' | 'p
         type: matchFirst[2] as 'video' | 'photo',
       })
     } else if (matchSecond) {
-      request(matchSecond[0]).then((res) => {
-        const matchThird = regexVideoID.exec(res.headers.location as string)
+      xior.get(matchSecond[0]).then((res) => {
+        const matchThird = regexVideoID.exec(res.response.url)
         return resolve({
           id: matchThird![3],
           type: matchThird![2] as 'video' | 'photo',
@@ -97,16 +107,20 @@ function extractTiktokURL(url: string): Promise<{ id: string, type: 'video' | 'p
 function working(jobId: string): Promise<File[]> {
   return new Promise((resolve) => {
     const interval = setInterval(async () => {
-      const { body } = await request(`https://app.publer.io/api/v1/job_status/${jobId}`, {
+      const { data: { payload, status } } = await xior.get<PublerResponse>(`https://app.publer.io/api/v1/job_status/${jobId}`, {
         headers: {
           ...publerHeaders,
           'method': 'GET',
           'path': `/api/v1/job_status/${jobId}`,
         }
       })
-      const { payload, status } = await body.json() as { payload: { path: string }[], status: string }
       if (status === 'complete') {
-        resolve(payload.map(({ path }) => ({ attachment: path, name: path.split('/').pop() as string })))
+        resolve(
+          payload[0]?.error ? [] :
+            payload.map(({ path, type }) => {
+              return ({ attachment: path, name: `${jobId}.${type === 'video' ? 'mp4' : 'jpg'}` })
+            })
+        )
         clearInterval(interval)
       }
     }, 1e3)
@@ -115,18 +129,14 @@ function working(jobId: string): Promise<File[]> {
 
 export async function facebookPublicVideo(url: string): Promise<File[]> {
   if (!url) return []
-  const res = await request('https://app.publer.io/hooks/media', {
-    method: 'POST',
+  const { data: { job_id } } = await xior.post<{ job_id: string }>('https://app.publer.io/hooks/media', { url: url }, {
     headers: {
       ...publerHeaders,
       'method': 'POST',
       'path': '/hooks/media',
       'content-type': 'application/json',
     },
-    body: JSON.stringify({ url }),
   })
-  const { job_id } = await res.body.json() as { job_id: string }
-  log.info('Waiting Job ID:', job_id)
   return working(job_id)
 }
 
@@ -136,10 +146,7 @@ export async function tiktokPublicMedia(url: string): Promise<File[]> {
   if (!id) return []
   const queries = encode({ ...tiktokQueries, aweme_id: id }, '?')
   config.debug && log.debug('TikTok Queries:', `${tiktokFeed}${queries}`)
-  const res = await makeTikTokRequest(`${tiktokFeed}${queries}`)
-  const data = await res.body.json()
-  await Bun.write('tiktok.json', JSON.stringify(data, null, 2))
-  const { aweme_list } = data as Ameme
+  const { data: { aweme_list } } = await makeTikTokRequest(`${tiktokFeed}${queries}`)
   if (!aweme_list) return []
   const { video, image_post_info } = aweme_list[0]
   if (type === 'video') {
