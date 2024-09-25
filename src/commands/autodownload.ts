@@ -1,6 +1,6 @@
 import type { CommandArgs } from "../types"
 import { matchMedia } from "../utils"
-import { facebookPublicVideo } from "../utils"
+import { facebookPublicVideo, tiktokPublicMedia, type File } from "../utils"
 
 export const name = "autodownload"
 export const description = "Automatically download videos from TikTok and Facebook"
@@ -13,17 +13,14 @@ export async function run({ message, args, client }: CommandArgs) {
   if (!match) return
   const { platform, id, type } = match
   client.log.await(`Downloading ${platform} ${type} ${id}`)
-  let attachment = ''
+  let files: File[] = []
   if (platform === "facebook") {
     if (type === 'reel' || type === 'video') {
-      attachment = await facebookPublicVideo(id) as string
+      files = await facebookPublicVideo(id)
     }
+  } else if (platform === "tiktok") {
+    files = await tiktokPublicMedia(id)
   }
-  await message.reply({
-    files: [{
-      attachment: attachment,
-      name: `${id}.mp4`
-    }]
-  })
+  await message.reply({ files: files })
   client.log.success(`Downloaded ${platform} ${type} ${id}`)
 }

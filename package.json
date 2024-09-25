@@ -1,6 +1,6 @@
 {
   "name": "mewbot",
-  "version": "1.0.2.hotfix1",
+  "version": "1.0.2.2",
   "module": "index.ts",
   "type": "module",
   "scripts": {
@@ -26,6 +26,7 @@
     "distube-yandex-music-plugin": "^1.0.5",
     "ffmpeg-static": "^5.2.0",
     "opusscript": "^0.1.1",
+    "qss": "^3.0.0",
     "signale": "^1.4.0",
     "sodium-native": "^4.2.0",
     "tsup": "^8.3.0"

@@ -7,7 +7,6 @@ export default class FFmpegDebugEvent extends DisTubeEvent<Events.FFMPEG_DEBUG> 
   readonly name = Events.FFMPEG_DEBUG;
   run(message: string) {
     const log = new Signale({ scope: "ffmpeg" });
-    if (!config.debug) return;
-    log.debug(`FFmpeg: ${message}`);
+    config.debug && log.debug(`FFmpeg: ${message}`);
   }
 }

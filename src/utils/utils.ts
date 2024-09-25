@@ -55,7 +55,7 @@ export function matchMedia(string: string) {
   const log = new Signale({ scope: "media matcher" })
 
   const facebook = /(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/ig
-  const tiktok = /^.*https:\/\/(?:m|www|vm)?\.?tiktok\.com\/((?:.*\b(?:(?:usr|v|embed|user|video)\/|\?shareId=|\&item_id=)(\d+))|\w+)/ig
+  const tiktok = /^.*https:\/\/(?:m|www|vm|vt)?\.?tiktok\.com\/((?:.*\b(?:(?:usr|v|embed|user|video|photo)\/|\?shareId=|\&item_id=)(\d+))|\w+)/ig
 
   const fb = facebook.exec(string)
   const tt = tiktok.exec(string)
@@ -70,7 +70,8 @@ export function matchMedia(string: string) {
   } else if (tt) {
     return {
       platform: "tiktok",
-      id: tt[1]
+      id: tt[0],
+      type: 'unknown'
     }
   } else {
     return null
