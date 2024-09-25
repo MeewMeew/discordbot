@@ -6,6 +6,7 @@ export default defineConfig({
   minify: true,
   clean: true,
   bundle: true,
+  splitting: false,
   target: 'esnext',
   outDir: 'build',
   silent: true,
