@@ -5,8 +5,6 @@ import { YouTubePlugin } from '@distube/youtube'
 import { YtDlpPlugin } from '@distube/yt-dlp'
 import { DirectLinkPlugin } from '@distube/direct-link'
 import { DeezerPlugin } from '@distube/deezer'
-import { TidalPlugin } from 'distube-tidal'
-import { AppleMusicPlugin } from 'distube-apple-music'
 
 export const plugins = [
   new FilePlugin(),
@@ -15,7 +13,6 @@ export const plugins = [
   new SoundCloudPlugin(),
   new SpotifyPlugin(),
   new DeezerPlugin(),
-  new AppleMusicPlugin(),
   new YtDlpPlugin({
     update: true,
   }),
