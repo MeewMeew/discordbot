@@ -1,0 +1,22 @@
+{
+  "name": "radio-bot",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/radio.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/signale": "^1.4.7"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@discordjs/voice": "^0.17.0",
+    "discord.js": "^14.16.2",
+    "ffmpeg-static": "^5.2.0",
+    "libsodium-wrappers": "^0.7.15",
+    "signale": "^1.4.0"
+  }
+}

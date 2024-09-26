@@ -1,0 +1,14 @@
+{
+  "token": "YOUR_BOT_TOKEN",
+  "prefix": "!",
+  "botID": "YOUR_BOT_ID",
+  "selectedResource": "lofi",
+  "resources": {
+    "lofi": "http://stream.laut.fm/lofi",
+    "jazz": "http://stream.laut.fm/jazz",
+    "phonk": "http://stream.laut.fm/phonk",
+    "edm": "http://stream.laut.fm/edm",
+    "chill": "http://stream.laut.fm/chill",
+    "happyfmdance": "http://stream.laut.fm/happyfmdance"
+  }
+}
