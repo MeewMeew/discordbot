@@ -54,26 +54,22 @@ export function buildEmbed({
 export function matchMedia(string: string) {
   const log = new Signale({ scope: "media matcher" })
 
-  const facebook = /(?:https?:\/\/)?(?:www\.)?(mbasic.facebook|m\.facebook|facebook|fb)\.(com|me)\/(?:(?:\w\.)*#!\/)?(?:pages\/)?(?:[\w\-\.]*\/)*([\w\-\.]*)/ig
+  const allUrl = /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.([a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&\/\/=]*)/ig
   const tiktok = /^.*https:\/\/(?:m|www|vm|vt)?\.?tiktok\.com\/((?:.*\b(?:(?:usr|v|embed|user|video|photo)\/|\?shareId=|\&item_id=)(\d+))|\w+)/ig
 
-  const fb = facebook.exec(string)
+  const all = allUrl.exec(string)
   const tt = tiktok.exec(string)
 
-  if (fb) {
-    const type = fb[0].includes("share/r") ? "reel" : fb[0].includes("share/v") ? "video" : fb[0].includes("share/p") ? "picture" : null
-    return {
-      platform: "facebook",
-      id: fb[0],
-      type: type
-    }
-  } else if (tt) {
+  if (tt) {
     return {
       platform: "tiktok",
       id: tt[0],
-      type: 'unknown'
     }
-  } else {
-    return null
+  } else if (all) {
+    return {
+      platform: "multiple",
+      id: all![0],
+    }
   }
+  return null
 }

@@ -1,6 +1,6 @@
 {
   "name": "mewbot",
-  "version": "1.0.2.3.hotfix3",
+  "version": "1.0.2.4",
   "module": "index.ts",
   "type": "module",
   "scripts": {
@@ -21,9 +21,6 @@
     "@distube/yt-dlp": "^2.0.1",
     "discord.js": "^14.16.2",
     "distube": "^5.0.2",
-    "distube-apple-music": "^0.1.0",
-    "distube-tidal": "^0.1.0",
-    "distube-yandex-music-plugin": "^1.0.5",
     "ffmpeg-static": "^5.2.0",
     "opusscript": "^0.1.1",
     "qss": "^3.0.0",

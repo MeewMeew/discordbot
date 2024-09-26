@@ -1,9 +1,9 @@
 import type { CommandArgs } from "../types"
 import { matchMedia } from "../utils"
-import { facebookPublicVideo, tiktokPublicMedia, type File } from "../utils"
+import { socialPublicMedia, tiktokPublicMedia, type File } from "../utils"
 
 export const name = "autodownload"
-export const description = "Automatically download videos from TikTok and Facebook"
+export const description = "Automatically download videos/photos from TikTok and Facebook"
 export const aliases = ["ad"]
 export const admin = false
 
@@ -11,21 +11,16 @@ export async function run({ message, args, client }: CommandArgs) {
   if (!client.config.autodownload) return
   const match = matchMedia(args[0])
   if (!match) return
-  const { platform, id, type } = match
-  client.log.await(`Downloading ${platform} ${type} ${id}`)
+  const { platform, id } = match
   let files: File[] = []
-  if (platform === "facebook") {
-    if (type === 'reel' || type === 'video') {
-      files = await facebookPublicVideo(id)
-    }
-  } else if (platform === "tiktok") {
+  if (platform === "tiktok") {
     files = await tiktokPublicMedia(id)
+  } else {
+    files = await socialPublicMedia(id)
   }
   if (!files.length) {
-    await message.react('❌')
-    return client.log.error(`Failed to download ${platform} ${type} ${id}`)
+    return await message.react('❌')
   }
   await message.reply({ files: files })
   await message.react('✅')
-  client.log.success(`Downloaded ${platform} ${type} ${id}`)
 }

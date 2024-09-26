@@ -104,7 +104,7 @@ function extractTiktokURL(url: string): Promise<{ id: string, type: 'video' | 'p
   })
 }
 
-function working(jobId: string): Promise<File[]> {
+function socialWorking(jobId: string): Promise<File[]> {
   return new Promise((resolve) => {
     const interval = setInterval(async () => {
       const { data: { payload, status } } = await xior.get<PublerResponse>(`https://app.publer.io/api/v1/job_status/${jobId}`, {
@@ -117,8 +117,8 @@ function working(jobId: string): Promise<File[]> {
       if (status === 'complete') {
         resolve(
           payload[0]?.error ? [] :
-            payload.map(({ path, type }) => {
-              return ({ attachment: path, name: `${jobId}.${type === 'video' ? 'mp4' : 'jpg'}` })
+            payload.map(({ path, type }, i) => {
+              return ({ attachment: path, name: `${jobId + i}.${type === 'video' ? 'mp4' : 'jpg'}` })
             })
         )
         clearInterval(interval)
@@ -127,7 +127,7 @@ function working(jobId: string): Promise<File[]> {
   })
 }
 
-export async function facebookPublicVideo(url: string): Promise<File[]> {
+export async function socialPublicMedia(url: string): Promise<File[]> {
   if (!url) return []
   const { data: { job_id } } = await xior.post<{ job_id: string }>('https://app.publer.io/hooks/media', { url: url }, {
     headers: {
@@ -137,7 +137,7 @@ export async function facebookPublicVideo(url: string): Promise<File[]> {
       'content-type': 'application/json',
     },
   })
-  return working(job_id)
+  return socialWorking(job_id)
 }
 
 export async function tiktokPublicMedia(url: string): Promise<File[]> {
