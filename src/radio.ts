@@ -37,6 +37,10 @@ export class Radio {
       let [command, ...args] = message.content.slice(config.prefix.length).trim().split(/ +/g)
       command = command.toLowerCase()
 
+      if (command === 'help') {
+        await message.reply({ content: `**Commands**\n\n\`${config.prefix}radio <station>\` - Start the radio\n\`${config.prefix}stop\` - Stop the radio\n\`${config.prefix}radiolist\` - List of radio stations` });
+      }
+
       if (command === 'radio') {
         let voiceChannel = message.member?.voice.channel
         let meVoiceChannel = message.guild.members.me?.voice.channel
