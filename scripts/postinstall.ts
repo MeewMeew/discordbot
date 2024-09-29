@@ -1,7 +1,7 @@
-import { Signale } from "signale"
 import fs from 'node:fs'
+import { logger } from "../src/utils"
 
-const log = new Signale({ scope: "distube" })
+const log = logger.scope('postinstall')
 try {
   const path = process.cwd() + '/node_modules/distube/dist/index.js'
   const fileContent = fs.readFileSync(path, 'utf-8')

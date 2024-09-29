@@ -6,8 +6,9 @@
   "autodownload": true,
   "allowNsfw": true,
   "debug": false,
-  "statuses": [
+  "activities": [
     "Mẹ Bạn",
     "Your Mom"
-  ]
+  ],
+  "activityType": "Listening"
 }

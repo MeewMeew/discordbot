@@ -1,6 +1,6 @@
 import type { Client, GuildTextBasedChannel, Message } from "discord.js"
 import type { Awaitable, DisTubeEvents } from "distube";
-import type { DisTubeClient } from "./core/client";
+import type { App } from "./core/client";
 
 export interface Metadata {
   message?: Message,
@@ -10,7 +10,7 @@ export interface Metadata {
 export interface CommandArgs {
   message: Message,
   args: string[],
-  client: DisTubeClient
+  client: App
 }
 
 export interface Command {
@@ -25,9 +25,9 @@ export interface Command {
 }
 
 export abstract class DisTubeEvent<T extends keyof DisTubeEvents> {
-  client: DisTubeClient;
+  client: App;
   abstract readonly name: T;
-  constructor(client: DisTubeClient) {
+  constructor(client: App) {
     this.client = client;
   }
 

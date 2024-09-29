@@ -1,24 +1,27 @@
-import { spawn } from 'node:child_process'
-import { Signale } from 'signale'
+import { spawn } from 'node:child_process';
+import { logger } from './utils';
 
-const log = new Signale({ scope: 'app wrapper' })
+const log = logger.scope('initialize');
 
 function initialize() {
-  const argv = process.argv
-  return spawn('bun', ['run', argv[1].includes('.ts') ? 'src/core/app.ts' : 'build/core/app.js'], {
+  const script = process.argv[1].includes('.ts') ? 'src/core/app.ts' : 'build/core/app.js';
+  const child = spawn('bun', ['run', script], {
     stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
-    cwd: process.cwd()
-  }).on('exit', (code: number) => {
-    if (code === 999) {
-      log.error('Bot exited with code', code)
-      log.warn('Bot will not reboot.')
-      process.exit(0)
-    } else {
-      log.warn('Bot exited with code', code)
-      log.warn('Bot rebooting...')
-      initialize()
+    cwd: process.cwd(),
+  });
+
+  child.on('exit', (code: number) => {
+    if (code === 1) {
+      log.error('Bot exited with code', code);
+      log.warn('Bot will not reboot.');
+      process.exit(0);
     }
-  }).on('error', log.error)
+    log.warn('Bot exited with code', code);
+    log.warn('Bot rebooting...');
+    initialize();
+  });
+
+  child.on('error', log.error);
 }
 
-initialize()
+initialize();
