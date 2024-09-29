@@ -1,6 +1,6 @@
 {
   "name": "mewbot",
-  "version": "1.0.3.hotfix3",
+  "version": "1.0.3.hotfix4",
   "module": "index.ts",
   "type": "module",
   "scripts": {

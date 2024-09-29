@@ -1,6 +1,6 @@
 import { type Message, Events } from "discord.js";
 import type { App } from "../../core/client";
-import { buildEmbed, matchMedia, findBestMatch, logger } from "../../utils";
+import { buildEmbeds, matchMedia, findBestMatch, logger } from "../../utils";
 import type { Command } from "../../types";
 
 export const name = Events.MessageCreate;
@@ -25,15 +25,17 @@ export const run = (client: App) => {
       else {
         const { bestMatch } = findBestMatch(commandName, allCommands, { threshold: 0.6 });
         if (bestMatch?.rating! >= 0.6) {
-          return message.reply(buildEmbed({
-            title: "Command Not Found",
-            description: `Did you mean \`${client.config.prefix}${bestMatch?.string}\`?`,
-            fields: client.commands.get(bestMatch?.string!)?.aliases ? [{
-              name: "Aliases",
-              value: client.commands.get(bestMatch?.string!)?.aliases?.map(alias => `\`${alias}\``).join(", ") || "",
-            }] : [],
-            color: "Red",
-          }));
+          return message.reply(buildEmbeds([
+            {
+              title: "Command Not Found",
+              description: `Did you mean \`${client.config.prefix}${bestMatch?.string}\`?`,
+              fields: client.commands.get(bestMatch?.string!)?.aliases ? [{
+                name: "Aliases",
+                value: client.commands.get(bestMatch?.string!)?.aliases?.map(alias => `\`${alias}\``).join(", ") || "",
+              }] : [],
+              color: "Red",
+            }
+          ]));
         }
       }
       command = client.commands.get(commandName)!;
@@ -43,22 +45,26 @@ export const run = (client: App) => {
     if (!command || !command.run) return;
     if (command.admin && client.config.ownerID !== message.author.id) {
       log.error(`The command ${command.name} is restricted to the bot owner`);
-      return message.reply(buildEmbed({
-        title: "Permission Denied",
-        description: "You do not have permission to run this command",
-        color: "Red",
-      }));
+      return message.reply(buildEmbeds([
+        {
+          title: "Permission Denied",
+          description: "You do not have permission to run this command",
+          color: "Red",
+        }
+      ]));
     }
 
     try {
       await command.run({ message, args, client });
       log.success(`The command ${command.name} was successfully executed by ${message.author.tag}`);
     } catch (error: any) {
-      client.debug && await message.reply(buildEmbed({
-        title: "An Error Occurred",
-        description: `Error while running the command: ${error.stack || error}`,
-        color: "Red",
-      }));
+      client.debug && await message.reply(buildEmbeds([
+        {
+          title: "An Error Occurred",
+          description: `Error while running the command: ${error.stack || error}`,
+          color: "Red",
+        }
+      ]));
       log.error(`An error occurred while running the command: ${error.stack || error}`);
     }
   };

@@ -1,5 +1,5 @@
 import type { CommandArgs } from "../types";
-import { buildEmbed } from "../utils";
+import { buildEmbeds } from "../utils";
 
 export const name = 'uptime';
 export const description = 'Get the uptime of the bot';
@@ -16,17 +16,19 @@ export const run = async ({ message }: CommandArgs) => {
     .filter((v, i) => v !== '00' || i > 0)
     .join(':')} «\``
 
-  await message.reply(buildEmbed({
-    fields: [
-      {
-        name: "Uptime",
-        value: msg
-      }
-    ],
-    footer: {
-      text: `Requested by ${message.author.tag}`,
-      iconURL: message.author.displayAvatarURL()
-    },
-    timestamp: true
-  }));
+  await message.reply(buildEmbeds([
+    {
+      fields: [
+        {
+          name: "Uptime",
+          value: msg
+        }
+      ],
+      footer: {
+        text: `Requested by ${message.author.tag}`,
+        iconURL: message.author.displayAvatarURL()
+      },
+      timestamp: true
+    }
+  ]));
 };
