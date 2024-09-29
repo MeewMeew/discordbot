@@ -19,12 +19,11 @@ export const run = (client: App) => {
     } else {
       let [commandName, ..._args] = message.content.slice(client.config.prefix.length).trim().split(/ +/g);
       const allCommands: string[] = Array.from(client.commands.values()).flatMap(cmd => [cmd.name, ...(cmd.aliases || [])]);
+      const foundCommand = client.commands.find(cmd => [...cmd.aliases || [], cmd.name]?.includes(commandName));
 
-      const foundCommand = client.commands.find(cmd => cmd.aliases?.includes(commandName));
-      if (foundCommand) {
-        commandName = foundCommand.name;
-      } else {
-        const { bestMatch } = findBestMatch(commandName, allCommands, { threshold: 0.7 });
+      if (foundCommand) commandName = foundCommand.name;
+      else {
+        const { bestMatch } = findBestMatch(commandName, allCommands, { threshold: 0.6 });
         if (bestMatch?.rating! >= 0.6) {
           return message.reply(buildEmbed({
             title: "Command Not Found",
@@ -35,8 +34,6 @@ export const run = (client: App) => {
             }] : [],
             color: "Red",
           }));
-        } else {
-          return;
         }
       }
       command = client.commands.get(commandName)!;
