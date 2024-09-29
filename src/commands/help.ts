@@ -22,7 +22,7 @@ export const run = async ({ message, args, client }: CommandArgs) => {
     const _categories = [...new Set(client.commands.map((command) => command.category))].forEach((category) => {
       const commands = client.commands.filter((command) => command.category === category)
       commandFields.push({
-        name: category! || "No Category",
+        name: category || "No Category",
         value: commands.map((command) => `\`${command.name}\``).join(", ")
       })
     })
