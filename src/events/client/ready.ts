@@ -10,13 +10,18 @@ export const run = (client: App) => {
     client.log.success(`Loaded ${client.events.size} Discord events`)
     client.log.success(`Loaded ${client.distubeEvents.size} DisTube events`)
     client.log.star('------------------------------------' + '-'.repeat(client.config.prefix.length))
-    client.log.info('Mewbot version v' + version + ' is online')
+    client.log.info('Mewbot version v' + version)
     client.log.info('Bot is ready with \' ' + client.config.prefix + ' \' as the prefix')
     client.log.info('Logged in as ' + client.user?.tag)
     client.log.star('------------------------------------' + '-'.repeat(client.config.prefix.length))
-    setInterval(() => client.user?.setActivity({
-      name: client.config.activities[Math.floor(Math.random() * client.config.activities.length)],
-      type: ActivityType[client.config.activityType as keyof typeof ActivityType] || 0
-    }), 1e4)
+    setInterval(() => {
+      let activity = client.config.activities[Math.floor(Math.random() * client.config.activities.length)]
+      let type = ActivityType[client.config.activityType as keyof typeof ActivityType] || 0
+      client.log.info(`Activity set to: ${client.config.activityType} ${activity}`)
+      client.user?.setActivity({
+        name: activity,
+        type: type
+      })
+    }, 1e4)
   }
 }

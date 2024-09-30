@@ -26,7 +26,7 @@ export const logger = new Signale({
     success: {
       badge: "s",
       color: "green",
-      label: "success"
+      label: "done"
     },
     star: {
       badge: "*",
