@@ -10,19 +10,19 @@ import { logger } from '../utils';
 import type { Signale } from 'signale';
 
 export class App extends Client {
-  distube = new Distube(this, {
+  public distube = new Distube(this, {
     plugins,
     emitAddListWhenCreatingQueue: true,
     emitAddSongWhenCreatingQueue: true,
     nsfw: config.allowNsfw,
   });
 
-  commands = new Collection<string, Command>();
-  events = new Collection<string, any>();
-  distubeEvents = new Collection<string, any>();
+  public commands = new Collection<string, Command>();
+  public events = new Collection<string, any>();
+  public distubeEvents = new Collection<string, any>();
   public log: Signale
-  config = config;
-  debug = config.debug;
+  public config = config;
+  public debug = config.debug;
 
   constructor(options: ClientOptions) {
     super(options);
@@ -32,11 +32,11 @@ export class App extends Client {
     this.loadFiles('events/distube', this.loadDistubeEvent.bind(this));
   }
 
-  loadFiles(dir: string, loadFunction: (name: string) => Promise<void>) {
+  private loadFiles(dir: string, loadFunction: (name: string) => Promise<void>) {
     readdirSync(join(__dirname, '..', dir)).forEach(loadFunction);
   }
 
-  async loadCommand(name: string) {
+  private async loadCommand(name: string) {
     const log = logger.scope('command loader')
     try {
       const command = await import(join(__dirname, '..', 'commands', name));
@@ -47,7 +47,7 @@ export class App extends Client {
     }
   }
 
-  async loadEvent(eventName: string) {
+  private async loadEvent(eventName: string) {
     const log = logger.scope('event loader')
     log.config({
       displayTimestamp: true,
@@ -64,7 +64,7 @@ export class App extends Client {
     }
   }
 
-  async loadDistubeEvent(eventName: string) {
+  private async loadDistubeEvent(eventName: string) {
     const log = logger.scope('distube event loader')
     try {
       const E = await import(join(__dirname, '..', 'events', 'distube', eventName));

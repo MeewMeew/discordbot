@@ -17,11 +17,15 @@ export const run = (client: App) => {
     setInterval(() => {
       let activity = client.config.activities[Math.floor(Math.random() * client.config.activities.length)]
       let type = ActivityType[client.config.activityType as keyof typeof ActivityType] || 0
-      client.log.info(`Activity set to: ${client.config.activityType} ${activity}`)
+      client.debug && client.log.debug(`Activity set to: ${client.config.activityType} ${activity}`)
       client.user?.setActivity({
         name: activity,
         type: type
       })
     }, 1e4)
+    setTimeout(() => {
+      client.log.info('Restarting...')
+      process.exit(0)
+    }, client.config.rebootTimeout)
   }
 }

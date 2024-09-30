@@ -11,4 +11,14 @@ const client = new App({
   ]
 })
 
-await client.login(client.config.token).catch(client.log.fatal)
+try {
+  await client.login(client.config.token)
+} catch (error) {
+  const err = error as Error
+  if ((err?.stack! || err?.message)?.includes('Not enough sessions remaining')) {
+    process.send?.(err.message)
+    process.exit(231)
+  } else {
+    client.log.fatal(err)
+  }
+}

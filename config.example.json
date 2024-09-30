@@ -6,6 +6,7 @@
   "autodownload": true,
   "allowNsfw": true,
   "debug": false,
+  "rebootTimeout": 36e5,
   "activities": [
     "Mẹ Bạn",
     "Your Mom"

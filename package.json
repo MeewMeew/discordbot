@@ -1,6 +1,6 @@
 {
   "name": "mewbot",
-  "version": "1.0.3.1",
+  "version": "1.0.3.2",
   "module": "index.ts",
   "type": "module",
   "scripts": {

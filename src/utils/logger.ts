@@ -1,7 +1,6 @@
 import { Signale } from "signale";
 
-export const logger = new Signale({
-  scope: "global",
+export const signaleConfig = {
   types: {
     error: {
       badge: "!!",
@@ -9,7 +8,7 @@ export const logger = new Signale({
       label: "error"
     },
     warn: {
-      badge: "!!",
+      badge: "!",
       color: "yellow",
       label: "warn"
     },
@@ -34,11 +33,15 @@ export const logger = new Signale({
       label: "star"
     }
   }
-});
+}
 
-logger.config({
+export const loggerConfig = {
   displayTimestamp: true,
   displayDate: true,
-});
+}
+
+export const logger = new Signale({ ...signaleConfig, scope: 'global' });
+
+logger.config(loggerConfig);
 
 export default logger;
