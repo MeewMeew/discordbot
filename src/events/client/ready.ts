@@ -23,9 +23,5 @@ export const run = (client: App) => {
         type: type
       })
     }, 1e4)
-    setTimeout(() => {
-      client.log.info('Restarting...')
-      process.exit(0)
-    }, client.config.rebootTimeout)
   }
 }
